@@ -1,0 +1,5 @@
+Youtube:
+  ApiKey: <GOOGLE_API_KEY>
+Slack: <SLACK_WEBHOOK_URL>
+TargetAccounts: 
+  - <TARGET_ACCOUNT_EXTERNALID>

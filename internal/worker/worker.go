@@ -70,9 +70,7 @@ func getLivestreamingUpdates() error {
 
 func StartWorker() {
 	log.Println("Started worker !")
-	// Debug
 	getLivestreamingUpdates()
-	//
 	t := time.NewTicker(5 * time.Minute)
 	defer func() {
 		fmt.Println("Stopping ticker...")
