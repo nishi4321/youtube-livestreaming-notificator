@@ -47,6 +47,13 @@ func getLivestreamingUpdates() error {
 			for _, vv := range notified {
 				if vv == v.ID {
 					isNotified = true
+					// Check change status (scheduled time, title)
+					scheduledData := scheduler.GetScheduledData()[vv]
+					if scheduledData.Video.Snippet.Title != v.Snippet.Title || scheduledData.Video.LiveStreamingDetails.ScheduledStartTime != v.LiveStreamingDetails.ScheduledStartTime {
+						slack.SendSlack(scheduledData.Channel, v, "配信情報変更")
+						// Change scheduled data
+						scheduler.AddSchedule(scheduledData.Channel, v)
+					}
 					break
 				}
 			}

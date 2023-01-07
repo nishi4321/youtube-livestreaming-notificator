@@ -70,3 +70,7 @@ func isEqualTime(t1 time.Time, t2 time.Time) bool {
 	}
 
 }
+
+func GetScheduledData() map[string]ScheduleInfo {
+	return schedules
+}
