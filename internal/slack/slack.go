@@ -38,7 +38,11 @@ func SendSlack(channel youtube.ChannelsItem, info youtube.VideoItem, footer stri
 }
 
 func generateThemeColor(url string) string {
-	resp, _ := http.Get(url)
+	resp, err := http.Get(url)
+	if err != nil {
+		log.Println("Generate color error.", err)
+		return "good"
+	}
 	img, _, err := image.Decode(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
