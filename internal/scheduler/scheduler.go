@@ -33,15 +33,17 @@ func StartScheduler() {
 		case <-t.C:
 			for id, v := range schedules {
 				if isEqualTime(v.Video.LiveStreamingDetails.ScheduledStartTime.Local(), time.Now()) {
-					// Get latest video info
-					video, err := youtube.GetVideos([]string{id})
-					if err != nil {
-						// if failed, use old info.
-						video.Items[0] = v.Video
-					}
-					slack.SendSlack(v.Channel, video.Items[0], "配信開始")
-					delete(schedules, id)
-					log.Println("Schedule notified and delete.")
+					go func(id string, v ScheduleInfo) {
+						// Get latest video info
+						video, err := youtube.GetVideos([]string{id})
+						if err != nil {
+							// if failed, use old info.
+							video.Items[0] = v.Video
+						}
+						slack.SendSlack(v.Channel, video.Items[0], "配信開始")
+						delete(schedules, id)
+						log.Println("Schedule notified and delete. " + video.Items[0].Snippet.ChannelTitle)
+					}(id, v)
 				}
 			}
 		}

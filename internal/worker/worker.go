@@ -50,6 +50,9 @@ func getLivestreamingUpdates() error {
 					// Check change status (scheduled time, title)
 					scheduledData := scheduler.GetScheduledData()[vv]
 					if scheduledData.Video.Snippet.Title != v.Snippet.Title || scheduledData.Video.LiveStreamingDetails.ScheduledStartTime != v.LiveStreamingDetails.ScheduledStartTime {
+						if scheduledData.Video.LiveStreamingDetails.ScheduledStartTime.Local().Unix() < time.Now().Unix() {
+							continue
+						}
 						slack.SendSlack(scheduledData.Channel, v, "配信情報変更")
 						// Change scheduled data
 						scheduler.AddSchedule(scheduledData.Channel, v)
