@@ -38,7 +38,7 @@ func StartScheduler() {
 						video, err := youtube.GetVideos([]string{id})
 						if err != nil {
 							// if failed, use old info.
-							video.Items[0] = v.Video
+							video.Items = append(video.Items, v.Video)
 						}
 						slack.SendSlack(v.Channel, video.Items[0], "配信開始")
 						delete(schedules, id)
